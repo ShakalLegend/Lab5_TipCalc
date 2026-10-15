@@ -1,16 +1,13 @@
 package com.example.lab5_tipcalc
 
 import android.os.Bundle
-import android.service.autofill.Validators.or
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.Nullable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -24,16 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.layout.onVisibilityChangedNode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.lab5_tipcalc.ui.theme.Lab5_TipCalcTheme
-import kotlinx.coroutines.selects.select
-import java.nio.file.WatchEvent
 import kotlin.math.round
+import kotlin.ranges.contains
 import kotlin.ranges.rangeTo
-import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +42,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+fun sellCount(sum: Int?, quentity: Int?): Any {
+    if (sum!=null && quentity!=null){
+        return when (quentity) {
+            in 1 .. 2 -> round(sum * 0.03)
+            in 3 .. 5 -> round(sum * 0.05)
+            in 6 .. 10 -> round(sum * 0.07)
+            in 10 .. 100 -> round(sum * 0.1)
+            else -> 0
+        }
+    }
+    else return 0
+}
 
 
 @Composable
@@ -57,6 +62,7 @@ fun onScreen() {
     var queOrder by remember { mutableStateOf("") }
     var sliderValue by remember { mutableStateOf(0f) }
     var radioValue = queOrder.toIntOrNull()
+    var resultMes = "Скидка " + sellCount(sumOrder.toIntOrNull(),queOrder.toIntOrNull()).toString()
     Box(modifier = Modifier.
         fillMaxSize()
     ){
@@ -71,7 +77,7 @@ fun onScreen() {
             if ((queOrder.toIntOrNull()==null) && (queOrder.isNullOrEmpty()==false)){
                 Text("Неподдерживаемый формат", modifier = Modifier.padding(5.dp), )
             }
-            Text("Чаевые:")
+            Text("Чаевые: ", modifier = Modifier.padding(5.dp))
             Slider(
                 value = sliderValue,
                 onValueChange = {sliderValue = it},
@@ -110,6 +116,7 @@ fun onScreen() {
                     Text("10%")
                 }
             }
+            Text(resultMes)
         }
     }
 }
