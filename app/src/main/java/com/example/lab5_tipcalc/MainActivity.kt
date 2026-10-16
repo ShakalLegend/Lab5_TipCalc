@@ -81,7 +81,6 @@ fun onScreen() {
                 onValueChange = {
                     sumOrder = it
                     finish = ""
-                    result = "Скидка: " + sell.toString()
                 }, placeholder = {Text("Сумма заказа")})
             if ((sumOrder.toIntOrNull()==null) && (sumOrder.isNullOrEmpty()==false)){
                 Text("Неподдерживаемый формат", modifier = Modifier.padding(5.dp), )
@@ -90,7 +89,6 @@ fun onScreen() {
                 onValueChange = {
                     queOrder = it
                     finish = ""
-                    result = "Скидка: " + sell.toString()
                 }, placeholder = {Text("Кол-во блюд")})
             if ((queOrder.toIntOrNull()==null) && (queOrder.isNullOrEmpty()==false)){
                 Text("Неподдерживаемый формат", modifier = Modifier.padding(5.dp), )
